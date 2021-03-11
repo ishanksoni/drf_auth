@@ -1,6 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
+
+## User manage to manage gender field 
+## extandable for managing password fields etc...
 class UserManager(models.Manager):
     M = 0
     F = 1
@@ -10,6 +17,8 @@ class UserManager(models.Manager):
     def females(self):
         return self.all().filter(gender=self.F)
 
+
+##Profile model with oneToOne relation with User Table.
 class Profile(models.Model):
 
     user = models.OneToOneField(User,on_delete=models.CASCADE)
@@ -21,3 +30,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+
+## Create Tokens for User who registar Using Signals
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        user = instance
+        Token.objects.create(user=instance)
+        print(user.username ,"Token Created!!")

@@ -2,12 +2,14 @@ from rest_framework import  serializers
 from django.contrib.auth.models import User
 from .models import Profile
 
+## Serializer to viewProfile
 class ProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Profile
         fields = ('name' , 'gender' ,'dob' , 'about')
 
+## Serializer to Register new User --
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     profile = ProfileSerializer(required= True)
