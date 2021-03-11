@@ -45,7 +45,11 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 ## Send Signal to deflaut Follow the App company Page
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def default_follow(sender, instance=None, created=False, **kwargs):
+    Company_name = 'XYZ'
     if created:
-        print("Registration Success \n You Started Following XYZ ")
-        user = instance
-        Follow.objects.create(follower = user, following=Page.objects.get(name = "XYZ"))
+        try:
+            print("Registration Success \n You Started Following XYZ ")
+            user = instance
+            Follow.objects.create(follower = user, following=Page.objects.get(name = Company_name))
+        except:
+            print("Company Page Not Found !")
