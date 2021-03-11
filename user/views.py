@@ -8,7 +8,6 @@ from rest_framework.permissions import AllowAny
 class ListUser(GenericAPIView , ListModelMixin , RetrieveModelMixin):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
     def get(self , request ,*args , **kwargs):
         return self.list(request,*args, **kwargs)
 
@@ -25,5 +24,3 @@ class CreateUser(GenericAPIView , CreateModelMixin):
     permission_classes = [AllowAny]
     def post(self , request ,*args , **kwargs):
         return self.create(request,*args, **kwargs)
-
-        
